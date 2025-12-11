@@ -2,7 +2,7 @@
   "name": "MAYO OS",
   "short_name": "MAYO OS",
   "description": "Official MAYO OS Webapp.",
-  "start_url": "assets/favicon.png",
+  "start_url": "launcher.html",
   "display": "standalone",
   "background_color": "#111",
   "theme_color": "#111",
