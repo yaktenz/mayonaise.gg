@@ -35,6 +35,36 @@
             border-radius: 3px;
         }
 
+        /* --- Return Button at Bottom --- */
+        .return-dock {
+            padding: 1rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: sticky; /* Keep the return button visible at the bottom */
+            bottom: 0;
+            background: rgba(32, 34, 37, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 10;
+        }
+        .return-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--discord-text);
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .return-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
         textarea {
             background-color: #222;
             width: 100%;
@@ -85,8 +115,14 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     New Note
                 </button>
+        <div class="return-dock">
+        <a href="../../launcher.html" class="return-btn">
+            ⌂
+        </a>
+    </div>
             </footer>
         </div>
+
 
         <!-- 2. Note Editor Area -->
         <div id="editor-container" class="flex-1 min-w-0 flex flex-col bg-[#111] md:block hidden-mobile">
