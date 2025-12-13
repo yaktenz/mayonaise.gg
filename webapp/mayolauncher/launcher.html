@@ -795,7 +795,7 @@
             DownloadsBtn.className = 'app-item app-downloads'; // Optional: Use a custom class for styling
             DownloadsBtn.href = 'resources/downloads/index.html'; // <--- **Crucial link to your new page**
             DownloadsBtn.innerHTML = `
-                <div class="app-icon" style="background: linear-gradient(135deg, orange, #ffc107); color: orange;"> 
+                <div class="app-icon" style="background: linear-gradient(135deg, orange, orange); color: orange;"> 
                     <img src="assets/os/downloads.jpg" alt="Downloads" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
                 </div>
                 <span class="app-label">Downloads</span>
@@ -803,11 +803,23 @@
             appGrid.appendChild(DownloadsBtn);
 
             // 2. Render "File Manager" App (New Static App)
+            const StadiaBtn = document.createElement('a');
+            StadiaBtn.className = 'app-item app-stadiastudios'; // Optional: Use a custom class for styling
+            StadiaBtn.href = 'https://stadiastudios.github.io/stadia/'; // <--- **Crucial link to your new page**
+            StadiaBtn.innerHTML = `
+                <div class="app-icon" style="background: linear-gradient(135deg, purple, purple); color: purple;"> 
+                    <img src="https://stadiastudios.github.io/stadia/assets/favicon.png" alt="Downloads" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
+                </div>
+                <span class="app-label">App Store</span>
+            `;
+            appGrid.appendChild(StadiaBtn);
+
+            // 2. Render "File Manager" App (New Static App)
             const SpotifyBtn = document.createElement('a');
             SpotifyBtn.className = 'app-item app-spotify'; // Optional: Use a custom class for styling
             SpotifyBtn.href = 'https://spotify.com/'; // <--- **Crucial link to your new page**
             SpotifyBtn.innerHTML = `
-                <div class="app-icon" style="background: linear-gradient(135deg, #1db954, #1ed760); color: green;"> 
+                <div class="app-icon" style="background: linear-gradient(135deg, green, green); color: green;"> 
                     <img src="assets/app-icons/spotify.png" alt="Spotify" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
                 </div>
                 <span class="app-label">Spotify</span>
