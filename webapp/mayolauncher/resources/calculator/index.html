@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator | By StadiaStudios</title>
+    <link rel="manifest" href="manifest.json">
+    <script src="../../snowfall_effect.js"></script>
+    <link rel="icon" href="https://cdn.jim-nielsen.com/ios/512/calculator-2017-10-10.png?rf=1024" type="image/x-icon">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the calculator grid and buttons */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* Reduced gap slightly for a tight, mobile-app feel */
+            gap: 12px; 
+            padding: 12px;
+            padding-bottom: 24px; /* Extra padding at the bottom for mobile safety area */
+        }
+
+        .calc-button {
+            /* Ensures buttons are perfectly circular/square (when not using col-span-2) */
+            aspect-ratio: 1 / 1; 
+            border-radius: 9999px; /* Fully rounded */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem; /* Adjusted for tighter mobile layout */
+            font-weight: 500;
+            user-select: none;
+            cursor: pointer;
+            transition: all 0.1s ease-in-out;
+        }
+
+        /* Specific styles for the double-width '0' button */
+        .zero-button {
+            grid-column: span 2;
+            text-align: left;
+            padding-left: 32px;
+            /* Override aspect-ratio for the double-width button */
+            width: 100%; 
+            aspect-ratio: auto;
+            height: 100%;
+        }
+
+        /* Active state (simulating press) */
+        .calc-button:active {
+            filter: brightness(80%);
+            transform: scale(0.98);
+        }
+
+        /* Global styles for full screen and font */
+        html {
+            /* Ensure the root element is also black for seamless full-screen effect */
+            background-color: #000000;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* True black background */
+            /* Full screen setup */
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* Allow vertical scroll if necessary */
+
+            /* Hide scrollbar for IE and Edge */
+            -ms-overflow-style: none;  
+            /* Firefox scrollbar styling */
+            scrollbar-width: thin; 
+            scrollbar-color: #333 #111; 
+        }
+
+        /* Custom Scrollbar Styles for Chrome, Safari, Opera (targeting both html and body) */
+        body::-webkit-scrollbar, html::-webkit-scrollbar {
+            width: 8px; /* width of the scrollbar */
+        }
+        body::-webkit-scrollbar-track, html::-webkit-scrollbar-track {
+            background: #111; 
+        }
+        body::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px; /* Rounded handle */
+        }
+        body::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+        
+        /* Display Area */
+        #display-wrapper {
+            /* Takes up the remaining space above the buttons */
+            flex-grow: 1; 
+            display: flex;
+            align-items: flex-end; /* Align text to the bottom */
+            justify-content: flex-end; /* Align text to the right */
+            padding: 0 16px;
+            /* Extra top padding for better mobile feel */
+            padding-top: 5vh; 
+        }
+        
+        #display {
+            font-size: 6rem; 
+            color: white;
+            overflow: hidden; /* <--- Hides all scrollbars on the display */
+            white-space: nowrap;
+            max-width: 100%;
+            line-height: 1; /* Tighter line spacing */
+        }
+
+        /* --- Return Button at Bottom --- */
+        .return-dock {
+            padding: 1rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: sticky; /* Keep the return button visible at the bottom */
+            bottom: 0;
+            background: rgba(32, 34, 37, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 10;
+        }
+        .return-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .return-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Media query to slightly increase button size on larger screens (tablets/desktops) */
+        @media (min-width: 640px) {
+             .calc-button {
+                font-size: 2.25rem;
+             }
+        }
+    </style>
+    <script>
+        // Configuration for Tailwind to use custom colors easily
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'calc-dark-gray': '#333333',
+                        'calc-light-gray': '#a6a6a6',
+                        'calc-orange': '#ff9500',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-black">
+
+    <!-- Calculator Container (Full Screen on Mobile) -->
+    <div id="calculator" class="w-full bg-black flex flex-col h-full sm:max-w-md sm:mx-auto">
+        
+        <!-- Display Area Wrapper -->
+        <div id="display-wrapper">
+             <div id="display">0</div>
+        </div>
+
+        <!-- Buttons Grid -->
+        <div class="calculator-grid">
+
+            <!-- Row 1: Function Buttons (Light Gray) and Main Operator (Orange) -->
+            <button id="clear-btn" class="calc-button bg-calc-light-gray text-black hover:bg-gray-300">AC</button>
+            <button id="sign-btn" class="calc-button bg-calc-light-gray text-black hover:bg-gray-300">+/-</button>
+            <button id="percent-btn" class="calc-button bg-calc-light-gray text-black hover:bg-gray-300">%</button>
+            <button id="divide-btn" data-operator="/" class="calc-button operator-btn bg-calc-orange text-white hover:bg-orange-400">÷</button>
+
+            <!-- Row 2: Numbers 7, 8, 9 and Operator * -->
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">7</button>
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">8</button>
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">9</button>
+            <button id="multiply-btn" data-operator="*" class="calc-button operator-btn bg-calc-orange text-white hover:bg-orange-400">×</button>
+
+            <!-- Row 3: Numbers 4, 5, 6 and Operator - -->
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">4</button>
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">5</button>
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">6</button>
+            <button id="subtract-btn" data-operator="-" class="calc-button operator-btn bg-calc-orange text-white hover:bg-orange-400">−</button>
+
+            <!-- Row 4: Numbers 1, 2, 3 and Operator + -->
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">1</button>
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">2</button>
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">3</button>
+            <button id="add-btn" data-operator="+" class="calc-button operator-btn bg-calc-orange text-white hover:bg-orange-400">+</button>
+
+            <!-- Row 5: Number 0 (double width), Decimal, and Equals -->
+            <button class="calc-button number-btn zero-button bg-calc-dark-gray text-white hover:bg-gray-700">0</button>
+            <button class="calc-button number-btn bg-calc-dark-gray text-white hover:bg-gray-700">.</button>
+            <button id="equals-btn" class="calc-button operator-btn bg-calc-orange text-white hover:bg-orange-400">=</button>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const display = document.getElementById('display');
+            const clearBtn = document.getElementById('clear-btn');
+            const signBtn = document.getElementById('sign-btn');
+            const percentBtn = document.getElementById('percent-btn');
+            const equalsBtn = document.getElementById('equals-btn');
+            const numberButtons = document.querySelectorAll('.number-btn');
+            const operatorButtons = document.querySelectorAll('.operator-btn');
+
+            // Calculator state variables
+            let currentOperand = '0';
+            let previousOperand = null;
+            let operation = null;
+            let shouldResetDisplay = false;
+
+            /**
+             * Updates the calculator display, handling display limits and formatting.
+             * @param {string} value - The string value to display.
+             */
+            function updateDisplay(value) {
+                // Ensure number is always shown correctly, limited to a reasonable length
+                currentOperand = String(value).substring(0, 10);
+                display.textContent = currentOperand;
+                
+                // Change 'AC' to 'C' when there's an active number
+                clearBtn.textContent = currentOperand === '0' && previousOperand === null ? 'AC' : 'C';
+
+                // Adjust font size dynamically for long numbers (mimics iOS behavior)
+                const length = display.textContent.length;
+                if (length > 7) {
+                    display.style.fontSize = '3rem';
+                } else if (length > 5) {
+                    display.style.fontSize = '4.5rem';
+                } else {
+                    display.style.fontSize = '6rem';
+                }
+            }
+
+            /**
+             * Appends a digit or decimal point to the current operand.
+             * @param {string} number - The digit or '.'
+             */
+            function appendNumber(number) {
+                // If the display needs to be reset (after an operation or equals), start new number
+                if (shouldResetDisplay) {
+                    currentOperand = number === '.' ? '0.' : number;
+                    shouldResetDisplay = false;
+                } 
+                // Don't allow multiple decimals
+                else if (number === '.' && currentOperand.includes('.')) {
+                    return;
+                }
+                // Replace initial '0' unless adding a decimal
+                else if (currentOperand === '0' && number !== '.') {
+                    currentOperand = number;
+                } 
+                // Append the number
+                else {
+                    currentOperand += number;
+                }
+                
+                updateDisplay(currentOperand);
+            }
+
+            /**
+             * Handles operator selection (+, -, *, /).
+             * @param {string} op - The operator symbol.
+             */
+            function chooseOperator(op) {
+                if (currentOperand === '') return;
+
+                // If previousOperand exists and an operation is set, calculate the intermediate result
+                if (previousOperand !== null && operation !== null) {
+                    calculate();
+                }
+
+                // Set the current operand as the previous operand for the next calculation
+                previousOperand = currentOperand;
+                operation = op;
+                shouldResetDisplay = true;
+
+                // Visually "activate" the selected operator
+                operatorButtons.forEach(button => {
+                    button.classList.remove('bg-white', 'text-calc-orange');
+                    button.classList.add('bg-calc-orange', 'text-white');
+                });
+                
+                const activeBtn = document.querySelector(`.operator-btn[data-operator="${op}"]`);
+                if (activeBtn) {
+                    activeBtn.classList.add('bg-white', 'text-calc-orange');
+                    activeBtn.classList.remove('bg-calc-orange', 'text-white');
+                }
+            }
+
+            /**
+             * Performs the mathematical calculation.
+             */
+            function calculate() {
+                // Ignore if no operation or previous operand
+                if (operation === null || previousOperand === null) {
+                    return;
+                }
+
+                const prev = parseFloat(previousOperand);
+                const current = parseFloat(currentOperand);
+                
+                if (isNaN(prev) || isNaN(current)) return;
+
+                let result;
+                
+                switch (operation) {
+                    case '+':
+                        result = prev + current;
+                        break;
+                    case '-':
+                        result = prev - current;
+                        break;
+                    case '*':
+                        result = prev * current;
+                        break;
+                    case '/':
+                        // Handle division by zero
+                        if (current === 0) {
+                             result = 'Error';
+                        } else {
+                            result = prev / current;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+
+                if (result === 'Error') {
+                    currentOperand = 'Error';
+                } else {
+                    // Fix floating point issues and limit decimal places
+                    currentOperand = String(Math.round(result * 1000000000000) / 1000000000000);
+                }
+
+                // Reset state for the next operation
+                operation = null;
+                previousOperand = null;
+                shouldResetDisplay = true;
+
+                // Remove active operator visual state
+                operatorButtons.forEach(button => {
+                    button.classList.remove('bg-white', 'text-calc-orange');
+                    button.classList.add('bg-calc-orange', 'text-white');
+                });
+
+                updateDisplay(currentOperand);
+            }
+
+            /**
+             * Resets the entire calculator state (AC) or just the current input (C).
+             */
+            function clear() {
+                if (clearBtn.textContent === 'AC') {
+                    // Full reset
+                    currentOperand = '0';
+                    previousOperand = null;
+                    operation = null;
+                    shouldResetDisplay = false;
+                } else {
+                    // Reset current input only
+                    currentOperand = '0';
+                }
+                
+                // Remove active operator visual state
+                operatorButtons.forEach(button => {
+                    button.classList.remove('bg-white', 'text-calc-orange');
+                    button.classList.add('bg-calc-orange', 'text-white');
+                });
+
+                updateDisplay(currentOperand);
+            }
+
+            /**
+             * Toggles the sign of the current operand.
+             */
+            function toggleSign() {
+                currentOperand = String(parseFloat(currentOperand) * -1);
+                updateDisplay(currentOperand);
+            }
+
+            /**
+             * Calculates the percentage of the current operand.
+             */
+            function percent() {
+                const num = parseFloat(currentOperand);
+                if (isNaN(num)) return;
+                
+                // Simple percentage: divide by 100
+                currentOperand = String(num / 100);
+                
+                updateDisplay(currentOperand);
+            }
+
+            // --- Event Listeners Setup ---
+
+            // Number buttons (0-9 and .)
+            numberButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    appendNumber(button.textContent);
+                });
+            });
+
+            // Operator buttons (+, -, *, /)
+            operatorButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    chooseOperator(button.dataset.operator);
+                });
+            });
+
+            // Equals button
+            equalsBtn.addEventListener('click', () => {
+                calculate();
+            });
+
+            // Clear (AC/C) button
+            clearBtn.addEventListener('click', clear);
+
+            // Sign (+/-) button
+            signBtn.addEventListener('click', toggleSign);
+
+            // Percent (%) button
+            percentBtn.addEventListener('click', percent);
+            
+            // Initial display update
+            updateDisplay(currentOperand);
+        });
+    </script>
+    <div class="return-dock">
+        <a href="../../launcher.html" class="return-btn">
+            ⌂
+        </a>
+    </div>
+</body>
+</html>

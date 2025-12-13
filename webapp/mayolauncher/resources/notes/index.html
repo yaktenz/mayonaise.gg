@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App | StadiaStudios</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind for Inter font and theme -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'ios-blue': '#007AFF',
+                        // Note: Using standard dark mode grays instead of custom 'ios-gray'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #111;
+        }
+        /* Custom scrollbar for a cleaner look (Dark Mode styles applied here) */
+        .notes-list::-webkit-scrollbar, .note-editor::-webkit-scrollbar {
+            width: 6px;
+        }
+        .notes-list::-webkit-scrollbar-thumb, .note-editor::-webkit-scrollbar-thumb {
+            background-color: #111; /* Tailwind gray-600 */
+            border-radius: 3px;
+        }
+
+        textarea {
+            background-color: #222;
+            width: 100%;
+            height: 100%;
+        }
+        .notes-list::-webkit-scrollbar-thumb:hover, .note-editor::-webkit-scrollbar-thumb:hover {
+            background-color: #111; /* Tailwind gray-500 on hover */
+        }
+        /* Mobile layout: hide editor initially */
+        @media (max-width: 768px) {
+            #notes-list-container {
+                width: 100%;
+            }
+            #editor-container.hidden-mobile {
+                display: none;
+            }
+            #notes-list-container.hidden-mobile {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#111] text-[white] font-sans h-screen overflow-hidden flex flex-col">
+
+    <div class="flex flex-1 min-h-0">
+        <!-- 1. Notes List Sidebar -->
+        <div id="notes-list-container" class="w-full md:w-80 bg-[#111] border-r border-[#111] shadow-xl flex flex-col">
+            <header class="p-4 border-b border-[#111]">
+                <h1 class="text-3xl font-bold text-white">Notes</h1>
+                <p id="note-count" class="text-gray-400 mt-1"></p>
+            </header>
+            
+            <div class="p-4">
+                <button onclick="createNewNote()" class="w-full py-2 bg-ios-blue text-black font-semibold rounded-lg shadow-md hover:bg-[#222] hover:text-white transition duration-150 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    New Note
+                </button>
+            </div>
+
+            <!-- Notes List -->
+            <div id="notes-list" class="notes-list flex-1 overflow-y-auto divide-y divide-gray-700">
+                <!-- Notes will be injected here -->
+            </div>
+            
+            <!-- Mobile Navigation Footer -->
+            <footer id="mobile-footer" class="p-3 border-t border-[#111] md:hidden bg-[#111]">
+                 <button onclick="createNewNote()" class="w-full py-2 bg-ios-blue text-white font-semibold rounded-lg shadow-md hover:bg-[#222] transition duration-150 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    New Note
+                </button>
+            </footer>
+        </div>
+
+        <!-- 2. Note Editor Area -->
+        <div id="editor-container" class="flex-1 min-w-0 flex flex-col bg-[#111] md:block hidden-mobile">
+            <header class="p-4 border-b border-[#111] flex justify-between items-center">
+                <!-- Back button for mobile -->
+                <button id="back-to-list-btn" onclick="showNotesList()" class="md:hidden text-ios-blue font-semibold mr-4 flex items-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    Notes
+                </button>
+                
+                <h2 id="editor-title" class="text-xl font-semibold truncate flex-1 text-white"></h2>
+
+                <button id="delete-note-btn" onclick="showDeleteConfirm()" class="text-red-500 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed ml-4" disabled title="Delete Note">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
+            </header>
+
+            <textarea id="note-editor" 
+                      class="note-editor flex-1 p-6 text-gray-100 text-lg leading-relaxed focus:outline-none resize-none disabled:bg-[#111] disabled:cursor-default"
+                      placeholder="Start typing your note here..."
+                      oninput="handleEditorInput()"
+                      disabled></textarea>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal (Custom replacement for alert/confirm) -->
+    <div id="delete-modal" class="fixed inset-0 bg-[#111] bg-opacity-75 z-50 hidden flex items-center justify-center p-4" onclick="closeDeleteConfirm(event)">
+        <div class="bg-[#222] rounded-xl shadow-2xl w-full max-w-sm p-6 transform transition-all duration-300 scale-95 md:scale-100" onclick="event.stopPropagation()">
+            <h3 class="text-xl font-bold mb-2 text-center text-white">Confirm Deletion</h3>
+            <p class="text-gray-400 mb-6 text-center">Are you sure you want to delete this note?</p>
+            <div class="flex space-x-4">
+                <button onclick="closeDeleteConfirm()" class="flex-1 py-3 bg-[#333] text-white font-semibold rounded-lg hover:bg-[#444] transition duration-150">Cancel</button>
+                <button onclick="deleteCurrentNote()" class="flex-1 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition duration-150">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global State
+        let notes = [];
+        let currentNoteId = null;
+        const NOTES_STORAGE_KEY = 'ios_style_notes_app_data';
+
+        // Elements
+        const notesListEl = document.getElementById('notes-list');
+        const noteEditorEl = document.getElementById('note-editor');
+        const editorContainerEl = document.getElementById('editor-container');
+        const notesListContainerEl = document.getElementById('notes-list-container');
+        const editorTitleEl = document.getElementById('editor-title');
+        const deleteBtnEl = document.getElementById('delete-note-btn');
+        const noteCountEl = document.getElementById('note-count');
+        const deleteModalEl = document.getElementById('delete-modal');
+
+        /**
+         * Utility function to generate a unique ID.
+         */
+        const generateId = () => crypto.randomUUID();
+
+        /**
+         * Loads notes from local storage.
+         * @returns {Array} The array of notes.
+         */
+        const loadNotes = () => {
+            const storedNotes = localStorage.getItem(NOTES_STORAGE_KEY);
+            notes = storedNotes ? JSON.parse(storedNotes) : [];
+            // Sort by latest modification time (most recent first)
+            notes.sort((a, b) => b.timestamp - a.timestamp);
+            return notes;
+        };
+
+        /**
+         * Saves the current notes array to local storage.
+         */
+        const saveNotes = () => {
+            // Re-sort before saving to keep the list ordered for the next load
+            notes.sort((a, b) => b.timestamp - a.timestamp);
+            localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+            renderNotesList();
+        };
+
+        /**
+         * Extracts a title and preview from the note content.
+         * @param {string} content - The full note content.
+         * @returns {{title: string, preview: string}} Title and truncated preview.
+         */
+        const getNotePreview = (content) => {
+            if (!content) return { title: 'New Note', preview: 'No additional text' };
+
+            const lines = content.trim().split('\n');
+            const rawTitle = lines[0].trim().substring(0, 50); // Use the first line as title
+
+            // If the first line is very short, grab a little more content for the title
+            const title = rawTitle.length > 0 ? rawTitle : 'New Note';
+
+            // Get the rest of the text for the preview
+            const remainingText = lines.slice(1).join(' ').trim();
+            const preview = remainingText.substring(0, 100).replace(/\s+/g, ' ').trim() || 'No additional text';
+            
+            return { title, preview };
+        };
+
+        /**
+         * Renders the list of notes in the sidebar.
+         */
+        const renderNotesList = () => {
+            notesListEl.innerHTML = ''; // Clear existing list
+            
+            noteCountEl.textContent = `${notes.length} Note${notes.length !== 1 ? 's' : ''}`;
+
+            if (notes.length === 0) {
+                notesListEl.innerHTML = `
+                    <div class="p-4 text-center text-gray-400 mt-10">
+                        <p>No notes created yet. Click 'New Note' to begin!</p>
+                    </div>
+                `;
+                
+                // Clear state when list is empty
+                currentNoteId = null;
+                noteEditorEl.value = '';
+                noteEditorEl.disabled = true;
+                editorTitleEl.textContent = 'Select a Note';
+                deleteBtnEl.disabled = true;
+
+                 // Mobile layout logic: show list, hide editor
+                 if (window.innerWidth < 768) {
+                    notesListContainerEl.classList.remove('hidden-mobile');
+                    editorContainerEl.classList.add('hidden-mobile');
+                }
+                
+                return;
+            }
+
+            notes.forEach(note => {
+                const { title, preview } = getNotePreview(note.content);
+                const date = new Date(note.timestamp);
+                const dateString = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                const isActive = note.id === currentNoteId;
+
+                const noteItem = document.createElement('div');
+                // Updated classes for dark mode: hover:bg-gray-700, and inactive preview text color
+                noteItem.className = `p-3 cursor-pointer transition duration-150 ${isActive ? 'bg-ios-blue text-white' : 'hover:bg-gray-700'}`;
+                noteItem.innerHTML = `
+                    <h3 class="text-lg font-semibold truncate">${title}</h3>
+                    <p class="text-sm ${isActive ? 'text-white' : 'text-gray-400'} mt-1 flex items-center">
+                        <span class="mr-2">${dateString}</span>
+                        <span class="truncate">${preview}</span>
+                    </p>
+                `;
+                noteItem.onclick = () => selectNote(note.id);
+                notesListEl.appendChild(noteItem);
+            });
+        };
+
+        /**
+         * Selects a note and loads its content into the editor.
+         * @param {string | null} id - The ID of the note to select, or null to clear.
+         */
+        const selectNote = (id) => {
+            currentNoteId = id;
+            const selectedNote = notes.find(n => n.id === id);
+
+            if (selectedNote) {
+                noteEditorEl.value = selectedNote.content;
+                noteEditorEl.disabled = false;
+                editorTitleEl.textContent = getNotePreview(selectedNote.content).title;
+                deleteBtnEl.disabled = false;
+                
+                // Mobile layout logic: show editor, hide list
+                if (window.innerWidth < 768) {
+                    notesListContainerEl.classList.add('hidden-mobile');
+                    editorContainerEl.classList.remove('hidden-mobile');
+                }
+            } else {
+                // Clear editor if no note is selected
+                noteEditorEl.value = '';
+                noteEditorEl.disabled = true;
+                editorTitleEl.textContent = 'Select a Note';
+                deleteBtnEl.disabled = true;
+
+                 // Mobile layout logic: show list, hide editor if cleared from a non-mobile action
+                 if (window.innerWidth < 768) {
+                    notesListContainerEl.classList.remove('hidden-mobile');
+                    editorContainerEl.classList.add('hidden-mobile');
+                }
+            }
+            // This call is necessary for updating the active state highlight when a user clicks a note.
+            renderNotesList(); 
+        };
+
+        /**
+         * Creates and selects a new, blank note.
+         */
+        const createNewNote = () => {
+            const newNote = {
+                id: generateId(),
+                content: '',
+                timestamp: Date.now()
+            };
+            notes.unshift(newNote); // Add to the start
+            saveNotes();
+            selectNote(newNote.id);
+            noteEditorEl.focus();
+        };
+
+        /**
+         * Handles user input in the editor, updating the note and saving.
+         */
+        const handleEditorInput = debounce(() => {
+            if (!currentNoteId) return;
+
+            const noteIndex = notes.findIndex(n => n.id === currentNoteId);
+            if (noteIndex > -1) {
+                // Update content and timestamp
+                notes[noteIndex].content = noteEditorEl.value;
+                notes[noteIndex].timestamp = Date.now();
+                
+                // Update the title display immediately
+                editorTitleEl.textContent = getNotePreview(noteEditorEl.value).title;
+                
+                // If content is empty, delete the note
+                if (noteEditorEl.value.trim() === '') {
+                    // console.log('Note content empty. Auto-deleting.');
+                    notes.splice(noteIndex, 1);
+                    // Select the next note, or null if none exist
+                    const nextNote = notes.length > 0 ? notes[0].id : null;
+                    selectNote(nextNote);
+                }
+                
+                saveNotes();
+            }
+        }, 300); // 300ms debounce
+
+        /**
+         * Debounce utility function to limit the rate of function calls.
+         * @param {function} func - The function to debounce.
+         * @param {number} delay - The delay in milliseconds.
+         */
+        function debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        /**
+         * Deletes the currently selected note.
+         */
+        const deleteCurrentNote = () => {
+            if (!currentNoteId) return;
+
+            const noteIndex = notes.findIndex(n => n.id === currentNoteId);
+            if (noteIndex > -1) {
+                notes.splice(noteIndex, 1);
+                // Select the next note, or null if none exist
+                const nextNote = notes.length > 0 ? notes[0].id : null;
+                selectNote(nextNote);
+                saveNotes();
+            }
+            closeDeleteConfirm();
+        };
+
+        /**
+         * Show the custom delete confirmation modal.
+         */
+        window.showDeleteConfirm = () => {
+            if (currentNoteId) {
+                deleteModalEl.classList.remove('hidden');
+            }
+        }
+
+        /**
+         * Close the custom delete confirmation modal.
+         */
+        window.closeDeleteConfirm = (event) => {
+            // Check if the click was directly on the modal background
+            if (event && event.target.id !== 'delete-modal') return;
+            deleteModalEl.classList.add('hidden');
+        }
+
+        /**
+         * Toggles back to the notes list on mobile.
+         * FIX: Removed selectNote(currentNoteId) call which was causing the editor to immediately reappear
+         * on mobile if a note was selected, overriding the intended back action.
+         */
+        window.showNotesList = () => {
+            notesListContainerEl.classList.remove('hidden-mobile');
+            editorContainerEl.classList.add('hidden-mobile');
+            renderNotesList(); // Simply ensure the list view is fresh.
+        }
+
+        /**
+         * Initialization function.
+         */
+        const init = () => {
+            loadNotes();
+            
+            // If notes exist, select the first one by default
+            if (notes.length > 0) {
+                selectNote(notes[0].id);
+            } else {
+                // If the list is empty, call renderNotesList once to set up the empty state UI.
+                renderNotesList(); 
+            }
+            
+            // Expose global functions to window for onclick handlers
+            window.createNewNote = createNewNote;
+            window.handleEditorInput = handleEditorInput;
+            window.deleteCurrentNote = deleteCurrentNote;
+        };
+
+        // Start the application when the window loads
+        window.onload = init;
+        
+        // Handle screen resizing for responsive layout changes
+        window.onresize = () => {
+             // If resizing from mobile to desktop or vice versa, ensure both panels are visible on desktop
+            if (window.innerWidth >= 768) {
+                notesListContainerEl.classList.remove('hidden-mobile');
+                editorContainerEl.classList.remove('hidden-mobile');
+            } else {
+                // On mobile, if a note is selected, hide the list
+                if (currentNoteId) {
+                    notesListContainerEl.classList.add('hidden-mobile');
+                    editorContainerEl.classList.remove('hidden-mobile');
+                } else {
+                    // If no note is selected, show the list
+                    notesListContainerEl.classList.remove('hidden-mobile');
+                    editorContainerEl.classList.add('hidden-mobile');
+                }
+            }
+        };
+
+    </script>
+</body>
+</html>
