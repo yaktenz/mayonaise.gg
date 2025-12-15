@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MayoLauncher (Beta)</title>
+    <title>MAYO OS (Beta)</title>
     <link rel="icon" href="assets/favicon.png" type="image/png">
     <link rel="manifest" href="manifest.json">
     <script src="snowfall_effect.js"></script>
@@ -644,7 +644,7 @@
 
     <script>
         // --- Constants ---
-        const OS_VERSION = 'MAYO OS v1.2.3';
+        const OS_VERSION = 'MAYO OS v1.3.4';
         const DEFAULT_DARK_WALLPAPER = 'assets/os/darkend.jpg';
         const DEFAULT_LIGHT_WALLPAPER = 'assets/os/light-default.png';
         
@@ -784,7 +784,7 @@
             CalculatorBtn.href = 'resources/calculator/index.html';
             CalculatorBtn.innerHTML = `
                 <div class="app-icon">
-                    <img src="https://cdn.jim-nielsen.com/ios/512/calculator-2017-10-10.png?rf=1024" alt="Calculator" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
+                    <img src="assets/app-icons/calculator.png" alt="Calculator" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
                 </div>
                 <span class="app-label">Calculator</span>
             `;
@@ -808,7 +808,7 @@
             PassProBtn.href = 'https://stadiastudios.github.io/passpro/'; // <--- **Crucial link to your new page**
             PassProBtn.innerHTML = `
                 <div class="app-icon" style="background: linear-gradient(135deg, black, black); color: black;"> 
-                    <img src="https://stadiastudios.github.io/stadia/assets/app/passpro.png" alt="PassPro" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
+                    <img src="assets/app-icons/passpro.png" alt="PassPro" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
                 </div>
                 <span class="app-label">PassPro</span>
             `;
@@ -820,7 +820,7 @@
             NotesBtn.href = 'resources/notes/index.html'; // <--- **Crucial link to your new page**
             NotesBtn.innerHTML = `
                 <div class="app-icon" style="background: linear-gradient(135deg, black, black); color: black;"> 
-                    <img src="https://cdn.jim-nielsen.com/ios/512/notes-2017-09-26.png?rf=1024" alt="Notes" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
+                    <img src="assets/app-icons/notes.png" alt="Notes" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
                 </div>
                 <span class="app-label">Notes</span>
             `;
@@ -832,7 +832,7 @@
             DownloadsBtn.href = 'resources/downloads/index.html'; // <--- **Crucial link to your new page**
             DownloadsBtn.innerHTML = `
                 <div class="app-icon" style="background: linear-gradient(135deg, orange, orange); color: orange;"> 
-                    <img src="assets/os/downloads.jpg" alt="Downloads" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
+                    <img src="assets/app-icons/downloads.jpg" alt="Downloads" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
                 </div>
                 <span class="app-label">Downloads</span>
             `;
@@ -841,10 +841,10 @@
             // 2. Render "File Manager" App (New Static App)
             const StadiaBtn = document.createElement('a');
             StadiaBtn.className = 'app-item app-stadiastudios'; // Optional: Use a custom class for styling
-            StadiaBtn.href = 'https://stadiastudios.github.io/stadia/'; // <--- **Crucial link to your new page**
+            StadiaBtn.href = 'resources/coming-soon.html'; // <--- **Crucial link to your new page**
             StadiaBtn.innerHTML = `
                 <div class="app-icon" style="background: linear-gradient(135deg, purple, purple); color: purple;"> 
-                    <img src="https://stadiastudios.github.io/stadia/assets/favicon.png" alt="Downloads" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
+                    <img src="assets/app-icons/app-store.png" alt="StadiaStore" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px;">
                 </div>
                 <span class="app-label">App Store</span>
             `;

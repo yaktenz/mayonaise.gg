@@ -111,19 +111,16 @@
             </div>
             
             <!-- Mobile Navigation Footer -->
-            <footer id="mobile-footer" class="p-3 border-t border-[#111] md:hidden bg-[#111]">
+            <footer id="mobile-footer" class="p-3 border-t border-gray-800 md:hidden bg-[#111] flex flex-col items-center gap-3">
                  <button onclick="createNewNote()" class="w-full py-2 bg-ios-blue text-white font-semibold rounded-lg shadow-md hover:bg-[#222] transition duration-150 flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     New Note
                 </button>
-        <div class="return-dock">
-        <a href="../../launcher.html" class="return-btn">
-            ⌂
-        </a>
-    </div>
+                <div class="return-dock">
+                    <a href="../../launcher.html" class="return-btn">⌂</a>
+                </div>
             </footer>
         </div>
-
 
         <!-- 2. Note Editor Area -->
         <div id="editor-container" class="flex-1 min-w-0 flex flex-col bg-[#111] md:block hidden-mobile">
@@ -146,6 +143,10 @@
                       placeholder="Start typing your note here..."
                       oninput="handleEditorInput()"
                       disabled></textarea>
+            
+            <div class="return-dock hidden md:flex">
+                <a href="../../launcher.html" class="return-btn">⌂</a>
+            </div>
         </div>
     </div>
 
