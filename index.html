@@ -1,422 +1,1128 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAYONAISE.GG | OFFICIAL SITE</title>
-        <link rel="icon" type="image/x-icon" href="assets/favicon.png">
-        <link rel="manifest" href="manifest.json">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fonts: Orbitron for headers, Inter for body -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAYONAISE.GG | OFFICIAL SITE</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root {
+      --color-bg: #111;
+      --color-card: #1a1a1a;
+      --color-accent: #4ad6b8;
+      --color-accent-alt: #41c2e6;
+      --color-accent-hover: #38a887;
+      --color-btn: #ff1766;
+      --color-btn-hover: #d21253;
+      --color-btn-text: #fff;
+      --color-header: #fff;
+      --color-sub: #bbb;
+      --color-muted: #666;
+      --color-border: #262626;
+      --color-link: #41c2e6;
+      --color-link-hover: #fff;
+      --shadow-card: 0 8px 32px 0 rgba(0,0,0,0.15);
+    }
 
-    <!-- Custom Config for Tailwind -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        gaming: ['Orbitron', 'sans-serif'],
-                    },
-                    colors: {
-                        nexus: {
-                            dark: '#0a0a0f',
-                            card: '#15151e',
-                            accent: '#6d28d9', // Purple
-                            highlight: '#22d3ee', // Cyan
-                        }
-                    },
-                    backgroundImage: {
-                        'hero-pattern': "linear-gradient(to bottom, rgba(10,10,15,0.3), rgba(10,10,15,1)), url('assets/banners/1.jpg')",
-                    }
-                }
-            }
-        }
-    </script>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
 
-    <style>
-        /* Custom Utilities */
-        .text-glow {
-            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px -10px rgba(109, 40, 217, 0.5);
-        }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: var(--color-bg);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      scroll-behavior: smooth;
+    }
 
-        /* Navbar Transition Class */
-        .nav-scrolled {
-            background-color: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: none;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
+    body {
+      overflow-x: hidden;
+    }
 
-        .nav-transparent {
-            background-color: transparent;
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
-        }
+    html {
+      scroll-padding-top: 88px;
+    }
 
-        /* Social Icon Hover Effects */
-        .social-icon {
-            transition: all 0.3s ease;
-            filter: grayscale(100%) brightness(200%); /* Start white/grey */
-            opacity: 0.7;
-        }
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 clamp(14px, 4vw, 20px);
+      width: 100%;
+    }
 
-        .social-icon:hover {
-            filter: grayscale(0%) brightness(100%); /* Reveal true color */
-            opacity: 1;
-            transform: scale(1.2);
-        }
+    /* Navbar */
+    nav {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      background: rgba(17,17,17,0.96);
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: 0 2px 12px 0 rgba(0,0,0,0.13);
+      transition: background 0.25s, box-shadow 0.25s, padding 0.25s;
+      padding: 18px 0;
+    }
+    nav.nav-scrolled {
+      background: #131313f6;
+      padding: 10px 0;
+    }
+    .nav-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: clamp(10px, 2vw, 22px);
+      min-width: 0;
+      position: relative;
+    }
+    .logo {
+      color: var(--color-header);
+      font-size: clamp(1.05rem, 3.2vw + 0.55rem, 2.1rem);
+      font-weight: bold;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      font-family: Arial, sans-serif;
+      transition: color 0.2s;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      line-height: 1.1;
+    }
+    .logo span {
+      color: var(--color-accent);
+    }
+    .main-menu {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: clamp(14px, 2vw, 26px);
+    }
+    .main-menu a {
+      color: var(--color-header);
+      text-decoration: none;
+      padding: 4px 3px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      font-weight: bold;
+      font-size: 1rem;
+      border-radius: 4px;
+      transition: color 0.19s;
+      position: relative;
+      /* remove prior background transition */
+    }
+    .main-menu a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-accent-alt), var(--color-accent));
+      border-radius: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.22s cubic-bezier(0.76,0,0.24,1);
+      opacity: 1;
+      pointer-events: none;
+    }
+    .main-menu a:hover,
+    .main-menu a:focus {
+      color: var(--color-accent);
+    }
+    .main-menu a:hover::after,
+    .main-menu a:focus::after {
+      transform: scaleX(1);
+    }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
+    .subscribe-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(90deg, var(--color-btn) 60%, var(--color-accent-alt) 120%);
+      color: var(--color-btn-text);
+      font-size: clamp(0.88rem, 1.1vw + 0.65rem, 1.05rem);
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      border: none;
+      border-radius: 24px;
+      padding: 11px clamp(18px, 2.5vw, 34px);
+      margin-left: 0;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      box-shadow: 0 4px 22px 0 rgba(255, 23, 102, 0.14),0 2px 10px -5px #0007;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.18s, box-shadow 0.19s;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .subscribe-btn::before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0; right: 0; top: 0; bottom: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.14) 7%, transparent 69%);
+      pointer-events: none;
+    }
+    .subscribe-btn:hover, .subscribe-btn:focus {
+      background: linear-gradient(90deg, var(--color-btn-hover), var(--color-accent));
+      transform: scale(1.05);
+      box-shadow: 0 7px 28px 0 rgba(255, 23, 102, 0.22),0 3px 16px -7px #000c;
+    }
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 8px;
+      flex-shrink: 0;
+      margin-left: auto;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-menu-btn svg {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+    #mobile-menu {
+      display: none;
+      background: var(--color-card);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-height: min(70vh, calc(100dvh - 72px));
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: 0 5px 18px 0 rgba(0,0,0,0.16);
+    }
+    #mobile-menu.open {
+      display: block;
+      animation: fadeInMenu 0.22s;
+    }
+    @keyframes fadeInMenu {
+      from { opacity: 0; transform: translateY(-16px);}
+      to { opacity: 1; transform: none;}
+    }
+    .mobile-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 13px;
+      padding: 28px 0;
+    }
+    .mobile-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+      font-size: 1.04rem;
+      background: transparent;
+      border-radius: 5px;
+      padding: 12px 0px;
+      width: 100%;
+      text-align: center;
+      transition: color 0.18s, background 0.16s;
+    }
+    .mobile-links a:hover {
+      color: var(--color-accent);
+      background: #232323;
+    }
 
-        ::-webkit-scrollbar-track {
-            background: #0a0a0f; /* nexus-dark */
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: #22d3ee; /* nexus-highlight */
-            border-radius: 20px;
-            border: 3px solid #0a0a0f; /* Creates padding around thumb */
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: #6d28d9; /* nexus-accent */
-        }
-    </style>
+    @media (min-width: 901px) {
+      #mobile-menu {
+        display: none !important;
+      }
+      /* Flatten menu into the bar so Discord + Subscribe stay one aligned row (incl. landscape / wide tablets). */
+      .main-menu {
+        margin-left: auto;
+      }
+      .main-menu a,
+      .subscribe-btn {
+        white-space: nowrap;
+      }
+      .logo {
+        flex-shrink: 0;
+      }
+    }
+    @media (max-width: 900px) {
+      .main-menu,
+      .subscribe-btn {
+        display: none !important;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .logo {
+        flex: 1 1 auto;
+        margin-right: 4px;
+      }
+      html {
+        scroll-padding-top: 76px;
+      }
+    }
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      min-height: 100dvh;
+      width: 100%;
+      max-width: 100%;
+      padding-top: max(92px, calc(env(safe-area-inset-top, 0px) + 76px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      padding-left: max(14px, env(safe-area-inset-left, 0px));
+      padding-right: max(14px, env(safe-area-inset-right, 0px));
+      background: linear-gradient(to bottom, rgba(17,17,17,0.4), rgba(17,17,17,1)), url('assets/banners/1.jpg') center center/cover no-repeat fixed;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width: 900px), (hover: none) {
+      .hero {
+        background-attachment: scroll;
+      }
+    }
+    .hero-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      padding: 0 clamp(12px, 4vw, 18px);
+      width: 100%;
+      max-width: 100%;
+    }
+    .hero-badge {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 18px;
+      padding: 7px clamp(14px, 4vw, 28px);
+      border: 2px solid var(--color-accent);
+      border-radius: 22px;
+      background: rgba(74,214,184,0.09);
+      font-size: 0.91rem;
+      color: var(--color-accent);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+    }
+    .hero-title {
+      font-size: clamp(1.85rem, 6vw + 0.6rem, 2.4rem);
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 30px;
+      letter-spacing: 0.04em;
+      line-height: 1.08;
+      font-family: Arial, sans-serif;
+      overflow-wrap: anywhere;
+    }
+    .hero-title span,
+    .text-glow {
+      color: var(--color-accent-alt);
+      text-shadow: 0 0 14px var(--color-accent-alt), 0 1px 0 #0009;
+    }
+    @media (min-width: 700px) {
+      .hero-title { font-size: 3.8rem;}
+    }
+    @media (min-width: 1100px) {
+      .hero-title { font-size: 5rem;}
+    }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+      justify-content: center;
+      margin: 36px 0 0 0;
+    }
+    .hero-actions a {
+      padding: 14px clamp(18px, 5vw, 36px);
+      max-width: 100%;
+      border: none;
+      border-radius: 20px;
+      font-size: clamp(0.9rem, 2.5vw + 0.55rem, 1.05rem);
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      letter-spacing: 0.13em;
+      text-decoration: none;
+      text-transform: uppercase;
+      background: var(--color-card);
+      color: var(--color-accent-alt);
+      margin: 0;
+      box-shadow: 0 3px 12px 0 rgba(65,194,230,0.08);
+      transition: background .21s, color .18s, box-shadow .17s;
+      outline: none;
+    }
+    .hero-actions a:first-child {
+      background: linear-gradient(90deg,var(--color-btn), var(--color-accent-alt));
+      color: #fff;
+      border: none;
+      margin-right: 0;
+      box-shadow: 0 8px 25px -8px #41c2e657,0 1px 8px 1px #000a;
+    }
+    .hero-actions a:first-child:hover {
+      background: linear-gradient(90deg,var(--color-btn-hover), var(--color-accent));
+      color: #fff;
+    }
+    .hero-actions a:last-child {
+      border: 2px solid var(--color-accent-alt);
+      background: #181818;
+      color: var(--color-accent-alt);
+      margin: 0;
+    }
+    .hero-actions a:last-child:hover {
+      background: var(--color-accent-alt);
+      color: #181818;
+    }
+    @media (min-width: 600px) {
+      .hero-actions { flex-direction: row; gap: 24px;}
+    }
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translate(-50%, 0);
+      animation: bounce 1.3s infinite;
+      opacity: 0.92;
+    }
+    .scroll-indicator svg {
+      display: block;
+      width: 26px;
+      height: 26px;
+      color: var(--color-accent-alt);
+      stroke: var(--color-accent-alt);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, 0);}
+      50% { transform: translate(-50%, 10px);}
+    }
+    /* Section Structure */
+    section[id] {
+      scroll-margin-top: 88px;
+    }
+    .section {
+      padding: clamp(48px, 10vw, 84px) 0;
+    }
+    .section-title {
+      font-size: clamp(1.45rem, 4vw + 0.6rem, 2.2rem);
+      font-weight: bold;
+      margin-bottom: 7px;
+      margin-top: 0;
+      letter-spacing: .06em;
+      color: var(--color-header);
+      font-family: Arial, sans-serif;
+    }
+    .section-title span {
+      color: var(--color-accent-alt);
+    }
+    .section-underline {
+      height: 5px;
+      width: 70px;
+      background: var(--color-accent-alt);
+      border-radius: 6px;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+    .videos-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 42px;
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .videos-header { flex-direction: column; align-items: flex-start; gap: 10px;}
+    }
+    .videos-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+      @media (min-width: 760px) {
+        .videos-list { grid-template-columns: repeat(2, 1fr);}
+      }
+      @media (min-width: 1080px) {
+        .videos-list { grid-template-columns: repeat(3, 1fr);}
+      }
+    .video-card {
+      background: var(--color-card);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      cursor: pointer;
+      border: 1.5px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.18s, border 0.15s, transform 0.17s;
+    }
+    .video-card:hover {
+      transform: translateY(-5px) scale(1.015);
+      box-shadow: 0 12px 33px -10px var(--color-accent-alt);
+      border-color: var(--color-accent-alt);
+    }
+    .video-thumb-area {
+      height: 210px;
+      position: relative;
+      overflow: hidden;
+      background: #181a1c;
+    }
+    .video-thumb-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.33s;
+    }
+    .video-card:hover .video-thumb-area img {
+      transform: scale(1.08);
+    }
+    .video-duration {
+      position: absolute;
+      right: 13px;
+      bottom: 10px;
+      background: #181818ec;
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 5px;
+      font-size: 0.96rem;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 2px 6px #111d;
+    }
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.19s;
+    }
+    .video-card:hover .video-overlay {
+      opacity: 1;
+      background: rgba(65,194,230,0.12);
+    }
+    @media (hover: none) {
+      .video-overlay {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.35);
+      }
+      .video-card:active .video-overlay {
+        background: rgba(65, 194, 230, 0.18);
+      }
+    }
+    .play-btn-circle {
+      width: 58px;
+      height: 58px;
+      background: var(--color-accent-alt);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 16px 0 var(--color-accent-alt), 0 2px 4px 2px #111c;
+    }
+    .play-btn-circle img {
+      width: 30px;
+      margin-left: 8px;
+      height: 30px;
+      filter: drop-shadow(0 2px 6px #18181899);
+    }
+    .video-body {
+      padding: 22px 18px 16px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .video-card h3 {
+      font-size: clamp(1rem, 2.4vw + 0.75rem, 1.14rem);
+      margin: 0 0 10px 0;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      transition: color 0.15s;
+      color: var(--color-header);
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+    .video-card:hover h3 {
+      color: var(--color-accent-alt);
+    }
+    .video-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px 14px;
+      flex-wrap: wrap;
+      color: var(--color-sub);
+      font-size: clamp(0.82rem, 2vw + 0.65rem, 0.97rem);
+      margin-top: 13px;
+      font-family: Arial, sans-serif;
+      opacity: 0.84;
+    }
+    .video-meta span:last-child {
+      text-align: right;
+      flex: 1 1 12rem;
+      min-width: 0;
+      line-height: 1.35;
+    }
+    @media (max-width: 520px) {
+      .video-meta {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .video-meta span:last-child {
+        text-align: left;
+        flex: none;
+      }
+    }
+    .videos-footer {
+      margin-top: 29px;
+      text-align: center;
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .videos-footer {
+        display: block;
+      }
+      .desktop-link {
+        display: none !important;
+      }
+    }
+    .videos-footer a, .desktop-link {
+      color: var(--color-accent-alt);
+      font-size: 1.03rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: color 0.18s;
+      font-family: Arial, sans-serif;
+      letter-spacing: .09em;
+      border-bottom: 2.5px solid transparent;
+      padding-bottom: 2px;
+    }
+    .videos-footer a:hover, .desktop-link:hover {
+      color: #fff;
+      border-bottom: 2.5px solid var(--color-accent-alt);
+    }
+    /* Music Section */
+    .music-bg {
+      background: linear-gradient(to bottom, var(--color-bg), var(--color-card));
+      padding: 82px 0 82px 0;
+      width: 100%;
+    }
+    .music-title {
+      text-align: center;
+      font-size: clamp(1.4rem, 4vw + 0.65rem, 2.19rem);
+      padding: 0 4px;
+      font-weight: bold;
+      color: var(--color-header);
+      margin-bottom: 36px;
+      margin-top: 0;
+      letter-spacing: .08em;
+      font-family: Arial, sans-serif;
+    }
+    .music-title span { color: var(--color-accent-alt);}
+    .music-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-bottom: 0;
+    }
+    @media (min-width: 700px) {
+      .music-grid { grid-template-columns: repeat(2, 1fr);}
+    }
+    @media (min-width: 1080px) {
+      .music-grid { grid-template-columns: repeat(4, 1fr);}
+    }
+    .music-card {
+      background: var(--color-card);
+      border-radius: 15px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1.5px solid var(--color-border);
+      transition: box-shadow 0.21s, border 0.15s, transform 0.16s;
+      box-shadow: var(--shadow-card);
+      cursor: pointer;
+    }
+    .music-card:hover {
+      transform: translateY(-4px) scale(1.015);
+      box-shadow: 0 10px 33px -10px var(--color-accent-alt);
+      border-color: var(--color-accent-alt);
+    }
+    .music-thumb-area {
+      width: 100%;
+      aspect-ratio: 1/1;
+      position: relative;
+      overflow: hidden;
+      background: #181a1c;
+    }
+    .music-thumb-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .32s;
+      display: block;
+    }
+    .music-card:hover .music-thumb-area img {
+      transform: scale(1.07);
+    }
+    .music-content {
+      padding: 26px 16px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-family: Arial, sans-serif;
+      gap: 0px;
+      flex: 1;
+    }
+    .music-card h3 {
+      font-weight: bold;
+      font-size: 1.12rem;
+      margin: 0 0 2px 0;
+      color: var(--color-header);
+      transition: color .13s;
+      font-family: Arial, sans-serif;
+    }
+    .music-card:hover h3 {
+      color: var(--color-accent-alt);
+    }
+    .music-card p {
+      font-size: 0.95rem;
+      color: #9ccacc;
+      margin-bottom: 16px;
+      margin-top: 0;
+      font-family: Arial, sans-serif;
+      opacity: 0.9;
+    }
+    .listen-btn {
+      display: block;
+      width: 100%;
+      padding: 10px 0;
+      text-align: center;
+      border-radius: 22px;
+      border: 2px solid var(--color-accent-alt);
+      color: var(--color-accent-alt);
+      background: none;
+      font-size: 1.05rem;
+      font-weight: bold;
+      letter-spacing: .10em;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      margin-top: 11px;
+      transition: background 0.18s, color 0.18s, border 0.14s;
+    }
+    .listen-btn:hover {
+      background: var(--color-accent-alt);
+      color: #181818;
+      border-color: #41c2e6e6;
+    }
+    .music-footer {
+      text-align: center;
+      margin-top: 54px;
+    }
+    .music-footer a {
+      font-size: 1.09rem;
+      font-family: Arial, sans-serif;
+      color: var(--color-link);
+      opacity: 0.82;
+      text-decoration: none;
+      border-bottom: 2px solid #2383ad33;
+      padding-bottom: 2px;
+      letter-spacing: .11em;
+      font-weight: bold;
+      transition: color 0.17s, border-color 0.14s, opacity 0.17s;
+    }
+    .music-footer a:hover {
+      color: #fff;
+      opacity: 1;
+      border-color: var(--color-accent-alt);
+    }
+    /* Footer */
+    footer {
+      background: #181818;
+      border-top: 2.5px solid #252532;
+      padding: 46px 0 24px 0;
+      position: relative;
+      overflow: hidden;
+      margin-top: 0;
+      color: var(--color-sub);
+      font-family: Arial, sans-serif;
+    }
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .footer-brand {
+      text-align: left;
+      margin-bottom: 0;
+    }
+    .footer-logo {
+      font-size: clamp(1.25rem, 3vw + 0.65rem, 1.8rem);
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: .1em;
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+    }
+    .footer-logo span {
+      color: var(--color-accent-alt);
+    }
+    .footer-copy {
+      color: #7acacc;
+      font-size: clamp(0.82rem, 2vw + 0.65rem, 0.99rem);
+      margin-top: 7px;
+      font-family: Arial, sans-serif;
+      line-height: 1.45;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+    .footer-socials a {
+      display: block;
+    }
+    .social-icon {
+      filter: grayscale(60%) brightness(155%);
+      opacity: 0.9;
+      transition: all 0.21s;
+      width: 28px;
+      height: 28px;
+      vertical-align: middle;
+    }
+    .social-icon:hover {
+      filter: grayscale(0%) brightness(102%);
+      opacity: 1;
+      transform: scale(1.08);
+    }
+    @media (max-width: 900px) {
+      .footer-content {
+        flex-direction: column;
+        gap: 21px;
+        align-items: flex-start;
+      }
+    }
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 11px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--color-bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-accent-alt);
+      border-radius: 18px;
+      border: 3.5px solid #191919;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-accent);
+    }
+  </style>
 </head>
-<body class="bg-nexus-dark text-white font-sans antialiased overflow-x-hidden">
+<body>
 
-    <!-- Navbar -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 nav-transparent">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <!-- Logo -->
-            <a href="#" class="text-2xl font-gaming font-bold tracking-wider text-white">
-                MAYONAISE<span class="text-nexus-highlight">.GG</span>
-            </a>
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="container nav-row">
+      <a href="#" class="logo">MAYONAISE<span>.GG</span></a>
+      <div class="main-menu">
+        <a href="#home">Home</a>
+        <a href="#videos">Videos</a>
+        <a href="#music">Music</a>
+        <a href="https://discord.gg/invite/a7eNTUaYPh" target="_blank" rel="noopener noreferrer" class="discord-btn">JOIN DISCORD</a>
+      </div>
+      <a href="https://www.youtube.com/@TheRealMayo_?sub_confirmation=1" target="_blank" class="subscribe-btn">SUBSCRIBE</a>
+      <button id="mobile-menu-btn" class="mobile-menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" role="dialog" aria-label="Site menu">
+      <div class="mobile-links">
+        <a href="#home">Home</a>
+        <a href="#videos">Videos</a>
+        <a href="#music">Music</a>
+        <a href="https://www.youtube.com/@TheRealMayo_?sub_confirmation=1" target="_blank" rel="noopener noreferrer">Subscribe</a>
+        <a href="https://discord.gg/invite/a7eNTUaYPh" target="_blank" rel="noopener noreferrer">Join Discord</a>
+      </div>
+    </div>
+  </nav>
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8">
-                <a href="#home" class="hover:text-nexus-highlight transition-colors font-medium text-sm tracking-wide uppercase">Home</a>
-                <a href="#videos" class="hover:text-nexus-highlight transition-colors font-medium text-sm tracking-wide uppercase">Videos</a>
-                <a href="webapp/downloads.html" class="hover:text-nexus-highlight transition-colors font-medium text-sm tracking-wide uppercase">Downloads</a>
-                <a href="#music" class="hover:text-nexus-highlight transition-colors font-medium text-sm tracking-wide uppercase">Music</a>
-            </div>
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        Join Discord to Catch Up!
+      </div>
+      <h1 class="hero-title">
+        MAYO<span class="text-glow">NAISE</span>
+      </h1>
+      <div class="hero-actions">
+        <a href="https://www.youtube.com/@TheRealMayo_?sub_confirmation=1">SUBSCRIBE</a>
+        <a href="https://discord.gg/invite/a7eNTUaYPh">Join Discord</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </div>
+  </section>
 
-            <!-- CTA Button -->
-            <a href="https://www.youtube.com/@TheRealMayo_?sub_confirmation=1" target="_blank" class="hidden md:inline-block bg-nexus-accent hover:bg-purple-700 text-white font-gaming px-6 py-2 rounded-sm text-sm transition-all transform hover:scale-105 shadow-lg shadow-purple-900/50">
-                SUBSCRIBE
-            </a>
-
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+  <!-- Latest Videos -->
+  <section id="videos" class="section">
+    <div class="container">
+      <div class="videos-header">
+        <div>
+          <h2 class="section-title">LATEST <span>VIDEOS</span></h2>
+          <div class="section-underline"></div>
         </div>
-
-        <!-- Mobile Menu (Hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden bg-nexus-card absolute top-full left-0 w-full border-b border-gray-800">
-            <div class="flex flex-col p-6 space-y-4 text-center">
-                <a href="#home" class="block hover:text-nexus-highlight py-2">Home</a>
-                <a href="#videos" class="block hover:text-nexus-highlight py-2">Videos</a>
-                <a href="#music" class="block hover:text-nexus-highlight py-2">Music</a> <!-- Updated link -->
-                <a href="webapp/downloads.html" class="block bg-nexus-accent py-3 rounded-sm text-white font-bold">DOWNLOADS</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="relative h-screen bg-hero-pattern bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center">
-        <div class="text-center px-4 relative z-10">
-            <div class="mb-4 inline-block px-4 py-1 border border-nexus-highlight/50 rounded-full bg-nexus-highlight/10 backdrop-blur-sm">
-                <span class="text-nexus-highlight text-xs font-bold tracking-[0.2em] uppercase">Join Discord to Catch Up!</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl lg:text-9xl font-gaming font-black text-white mb-6 leading-tight">
-                MAYO<span class="text-transparent bg-clip-text bg-gradient-to-r from-nexus-highlight to-purple-500 text-glow">NAISE</span>
-            </h1>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://www.youtube.com/@TheRealMayo_?sub_confirmation=1" class="px-8 py-4 bg-white text-black font-bold rounded-sm hover:bg-gray-200 transition-colors uppercase tracking-widest text-sm">
-                    SUBSCRIBE
+        <a href="https://www.youtube.com/@TheRealMayo_" class="desktop-link">VIEW ALL VIDEOS &rarr;</a>
+      </div>
+      <div class="videos-list">
+        <!-- Video Card 1 -->
+        <div class="video-card">
+          <div class="video-thumb-area">
+            <img src="assets/thumbnails/1.jpg" alt="Gameplay">
+            <div class="video-duration">3:29</div>
+            <div class="video-overlay">
+              <div class="play-btn-circle">
+                <a href="https://www.youtube.com/watch?v=US72-n1CJ9o" target="_blank">
+                  <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png" alt="Play">
                 </a>
-                <a href="https://discord.gg/invite/a7eNTUaYPh" class="px-8 py-4 border border-white/30 hover:border-nexus-highlight hover:text-nexus-highlight text-white backdrop-blur-md rounded-sm transition-all uppercase tracking-widest text-sm">
-                    Join Discord
-                </a>
+              </div>
             </div>
+          </div>
+          <div class="video-body">
+            <h3>How to get WeMod Premium For Free in 2025! (Legit)</h3>
+            <div class="video-meta">
+              <span>WeMod Cheats</span>
+              <span>4.2K Views • Jul 3, 2025</span>
+            </div>
+          </div>
         </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <svg class="w-6 h-6 text-nexus-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
+        <!-- Video Card 2 -->
+        <div class="video-card">
+          <div class="video-thumb-area">
+            <img src="assets/thumbnails/2.png" alt="Gameplay">
+            <div class="video-duration">2:49</div>
+            <div class="video-overlay">
+              <div class="play-btn-circle">
+                <a href="https://www.youtube.com/watch?v=zRpVXx8VtPY" target="_blank">
+                  <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png" alt="Play">
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="video-body">
+            <h3>I Almost Got Robbed IN GTA RP! 👀 (ECLIPSERP)</h3>
+            <div class="video-meta">
+              <span>GTA RP</span>
+              <span>32 Views • Dec 12, 2025</span>
+            </div>
+          </div>
         </div>
-    </section>
+        <!-- Video Card 3 -->
+        <div class="video-card">
+          <div class="video-thumb-area">
+            <img src="assets/thumbnails/3.png" alt="Gameplay">
+            <div class="video-duration">10:24</div>
+            <div class="video-overlay">
+              <div class="play-btn-circle">
+                <a href="https://youtu.be/Wz5jkFUNoTA?si=g-QoGtdj4jbf4qA9" target="_blank">
+                  <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png" alt="Play">
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="video-body">
+            <h3>I WENT TO PRISON ON MY FIRST DAY OUT GTA RP!😭</h3>
+            <div class="video-meta">
+              <span>GTA RP</span>
+              <span>59 Views • Dec 10, 2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="videos-footer">
+        <a href="https://www.youtube.com/@TheRealMayo_">VIEW ALL VIDEOS &rarr;</a>
+      </div>
+    </div>
+  </section>
 
-    <!-- Latest Videos -->
-    <section id="videos" class="py-20 px-6 container mx-auto">
-        <div class="flex justify-between items-end mb-12">
+  <!-- Music Section -->
+  <section id="music" class="music-bg">
+    <div class="container">
+      <h2 class="music-title">LISTEN TO MY <span>MUSIC</span></h2>
+      <div class="music-grid">
+        <!-- Music Card 1 -->
+        <div class="music-card">
+          <div class="music-thumb-area">
+            <img src="assets/thumbnails/diditagain.png" alt="Album Cover: Neon Drift">
+          </div>
+          <div class="music-content">
             <div>
-                <h2 class="text-3xl md:text-4xl font-gaming font-bold mb-2">LATEST <span class="text-nexus-accent">VIDEOS</span></h2>
-                <div class="h-1 w-20 bg-nexus-highlight"></div>
+              <h3>Geeked Prod. Wavrmuzik</h3>
+              <p>Genre: Rap</p>
             </div>
-            <a href="https://www.youtube.com/@TheRealMayo_" class="hidden md:block text-gray-400 hover:text-white transition-colors text-sm font-medium">VIEW ALL VIDEOS &rarr;</a>
+            <a href="https://www.youtube.com/watch?v=oZnrJPvEEIQ" target="_blank" class="listen-btn">LISTEN NOW</a>
+          </div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-            <!-- Video Card 1 -->
-            <div class="bg-nexus-card rounded-xl overflow-hidden card-hover transition-all duration-300 group cursor-pointer border border-gray-800 hover:border-nexus-accent">
-                <div class="relative h-48 overflow-hidden">
-                    <img src="assets/thumbnails/1.jpg" alt="Gameplay" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 text-xs font-bold rounded">3:29</div>
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                            <a href="https://www.youtube.com/watch?v=US72-n1CJ9o">
-                            <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png" alt="Play" class="w-8 h-8 ml-1">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-5">
-                    <h3 class="font-bold text-lg mb-2 group-hover:text-nexus-highlight transition-colors">How to get WeMod Premium For Free in 2025! (Legit)</h3>
-                    <div class="flex justify-between text-gray-400 text-xs mt-4">
-                        <span>WeMod Cheats</span>
-                        <span>4.2K Views • Jul 3, 2025</span>
-                    </div>
-                </div>
+        <!-- Music Card 2 -->
+        <div class="music-card">
+          <div class="music-thumb-area">
+            <img src="assets/thumbnails/diditagain.png" alt="Album Cover: Cyber Flow">
+          </div>
+          <div class="music-content">
+            <div>
+              <h3>Peaceful Nights (Prod. Luto Beats)</h3>
+              <p>Genre: Rap</p>
             </div>
-
-            <!-- Video Card 2 -->
-            <div class="bg-nexus-card rounded-xl overflow-hidden card-hover transition-all duration-300 group cursor-pointer border border-gray-800 hover:border-nexus-accent">
-                <div class="relative h-48 overflow-hidden">
-                    <img src="assets/thumbnails/2.png" alt="Gameplay" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 text-xs font-bold rounded">2:49</div>
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                            <a href="https://www.youtube.com/watch?v=zRpVXx8VtPY">
-                            <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png" alt="Play" class="w-8 h-8 ml-1">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-5">
-                    <h3 class="font-bold text-lg mb-2 group-hover:text-nexus-highlight transition-colors">I Almost Got Robbed IN GTA RP! 👀 (ECLIPSERP)</h3>
-                    <div class="flex justify-between text-gray-400 text-xs mt-4">
-                        <span>GTA RP</span>
-                        <span>32 Views • Dec 12, 2025</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Video Card 3 -->
-            <div class="bg-nexus-card rounded-xl overflow-hidden card-hover transition-all duration-300 group cursor-pointer border border-gray-800 hover:border-nexus-accent">
-                <div class="relative h-48 overflow-hidden">
-                    <img src="assets/thumbnails/3.png" alt="Gameplay" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 text-xs font-bold rounded">10:24</div>
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                            <a href="https://youtu.be/Wz5jkFUNoTA?si=g-QoGtdj4jbf4qA9">
-                            <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png" alt="Play" class="w-8 h-8 ml-1">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-5">
-                    <h3 class="font-bold text-lg mb-2 group-hover:text-nexus-highlight transition-colors">I WENT TO PRISON ON MY FIRST DAY OUT GTA RP!😭</h3>
-                    <div class="flex justify-between text-gray-400 text-xs mt-4">
-                        <span>GTA RP</span>
-                        <span>59 Views • Dec 10, 2025</span>
-                    </div>
-                </div>
-            </div>
-
+            <a href="https://www.youtube.com/watch?v=lcM4yRisbbs" target="_blank" class="listen-btn">LISTEN NOW</a>
+          </div>
         </div>
-        
-        <div class="mt-8 text-center md:hidden">
-             <a href="https://www.youtube.com/@TheRealMayo_" class="text-gray-400 hover:text-white transition-colors text-sm font-medium">VIEW ALL VIDEOS &rarr;</a>
+        <!-- Music Card 3 -->
+        <div class="music-card">
+          <div class="music-thumb-area">
+            <img src="assets/thumbnails/3am.jpg" alt="Album Cover: Arcade Boss">
+          </div>
+          <div class="music-content">
+            <div>
+              <h3>3.A.M (Prod By SayBreezy)</h3>
+              <p>Genre: Rap</p>
+            </div>
+            <a href="https://www.youtube.com/watch?v=kk7DuYfRK0I" target="_blank" class="listen-btn">LISTEN NOW</a>
+          </div>
         </div>
-    </section>
-
-    <!-- Music Section (Replaced 'About') -->
-    <section id="music" class="py-20 bg-gradient-to-b from-nexus-dark to-nexus-card">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-gaming font-bold mb-12 text-center">LISTEN TO MY <span class="text-nexus-highlight">MUSIC</span></h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                
-                <!-- Music Card 1 -->
-                <div class="bg-nexus-card rounded-xl overflow-hidden card-hover transition-all duration-300 group cursor-pointer border border-gray-800 hover:border-nexus-accent flex flex-col">
-                    <div class="relative aspect-square overflow-hidden">
-                        <!-- Placeholder Image URL for Cover -->
-                        <img src="assets/thumbnails/diditagain.png" alt="Album Cover: Neon Drift" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-5 flex flex-col justify-between flex-grow">
-                        <div>
-                            <h3 class="font-bold text-xl mb-1 group-hover:text-nexus-highlight transition-colors">Geeked Prod. Wavrmuzik</h3>
-                            <p class="text-gray-400 text-sm mb-4">Genre: Rap</p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=oZnrJPvEEIQ" target="_blank" class="text-center w-full block mt-4 px-4 py-2 text-sm font-gaming font-semibold rounded-sm border-2 border-nexus-highlight text-nexus-highlight hover:bg-nexus-highlight hover:text-black transition-all">
-                            LISTEN NOW
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Music Card 2 -->
-                <div class="bg-nexus-card rounded-xl overflow-hidden card-hover transition-all duration-300 group cursor-pointer border border-gray-800 hover:border-nexus-accent flex flex-col">
-                    <div class="relative aspect-square overflow-hidden">
-                        <!-- Placeholder Image URL for Cover -->
-                        <img src="assets/thumbnails/diditagain.png" alt="Album Cover: Cyber Flow" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-5 flex flex-col justify-between flex-grow">
-                        <div>
-                            <h3 class="font-bold text-xl mb-1 group-hover:text-nexus-highlight transition-colors">Peaceful Nights (Prod. Luto Beats)</h3>
-                            <p class="text-gray-400 text-sm mb-4">Genre: Rap</p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=lcM4yRisbbs" target="_blank" class="text-center w-full block mt-4 px-4 py-2 text-sm font-gaming font-semibold rounded-sm border-2 border-nexus-highlight text-nexus-highlight hover:bg-nexus-highlight hover:text-black transition-all">
-                            LISTEN NOW
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Music Card 3 -->
-                <div class="bg-nexus-card rounded-xl overflow-hidden card-hover transition-all duration-300 group cursor-pointer border border-gray-800 hover:border-nexus-accent flex flex-col">
-                    <div class="relative aspect-square overflow-hidden">
-                        <!-- Placeholder Image URL for Cover -->
-                        <img src="assets/thumbnails/3am.jpg" alt="Album Cover: Arcade Boss" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-5 flex flex-col justify-between flex-grow">
-                        <div>
-                            <h3 class="font-bold text-xl mb-1 group-hover:text-nexus-highlight transition-colors">3.A.M (Prod By SayBreezy)</h3>
-                            <p class="text-gray-400 text-sm mb-4">Genre: Rap</p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=kk7DuYfRK0I" target="_blank" class="text-center w-full block mt-4 px-4 py-2 text-sm font-gaming font-semibold rounded-sm border-2 border-nexus-highlight text-nexus-highlight hover:bg-nexus-highlight hover:text-black transition-all">
-                            LISTEN NOW
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Music Card 4 -->
-                <div class="bg-nexus-card rounded-xl overflow-hidden card-hover transition-all duration-300 group cursor-pointer border border-gray-800 hover:border-nexus-accent flex flex-col">
-                    <div class="relative aspect-square overflow-hidden">
-                        <!-- Placeholder Image URL for Cover -->
-                        <img src="assets/thumbnails/diditagain.png" alt="Album Cover: Zero Latency" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    </div>
-                    <div class="p-5 flex flex-col justify-between flex-grow">
-                        <div>
-                            <h3 class="font-bold text-xl mb-1 group-hover:text-nexus-highlight transition-colors">Money Called (Prod. Luto Beats)</h3>
-                            <p class="text-gray-400 text-sm mb-4">Genre: Rap</p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=K4iHR50pXsU" target="_blank" class="text-center w-full block mt-4 px-4 py-2 text-sm font-gaming font-semibold rounded-sm border-2 border-nexus-highlight text-nexus-highlight hover:bg-nexus-highlight hover:text-black transition-all">
-                            LISTEN NOW
-                        </a>
-                    </div>
-                </div>
-                
+        <!-- Music Card 4 -->
+        <div class="music-card">
+          <div class="music-thumb-area">
+            <img src="assets/thumbnails/diditagain.png" alt="Album Cover: Zero Latency">
+          </div>
+          <div class="music-content">
+            <div>
+              <h3>Money Called (Prod. Luto Beats)</h3>
+              <p>Genre: Rap</p>
             </div>
-            
-            <div class="text-center mt-12">
-                <a href="https://www.youtube.com/@YoungDollazz1700" target="_blank" class="text-lg font-gaming text-white/70 hover:text-nexus-highlight transition-colors tracking-wider border-b border-nexus-highlight/50 pb-1">
-                    VIEW ALL RELEASES &rarr;
-                </a>
-            </div>
-
+            <a href="https://www.youtube.com/watch?v=K4iHR50pXsU" target="_blank" class="listen-btn">LISTEN NOW</a>
+          </div>
         </div>
-    </section>
+      </div>
+      <div class="music-footer">
+        <a href="https://www.youtube.com/@YoungDollazz1700" target="_blank">VIEW ALL RELEASES &rarr;</a>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="bg-black py-12 border-t border-gray-900 relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10 flex flex-col md:flex-row justify-between items-center">
-            
-            <div class="mb-8 md:mb-0 text-center md:text-left">
-                <a href="#" class="text-2xl font-gaming font-bold tracking-wider text-white">
-                    MAYONAISE<span class="text-nexus-highlight">.GG</span>
-                </a>
-                <p class="text-gray-500 text-sm mt-2">© 2024 MAYONAISE YT | OFFICIAL WEBSITE | All rights reserved.</p>
-            </div>
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">MAYONAISE<span>.GG</span></a>
+        <p class="footer-copy">© 2024 MAYONAISE YT | OFFICIAL WEBSITE | All rights reserved.</p>
+      </div>
+      <div class="footer-socials">
+        <a href="https://www.youtube.com/@TheRealMayo_" aria-label="YouTube">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube" class="social-icon">
+        </a>
+        <a href="https://discord.gg/invite/a7eNTUaYPh" aria-label="Discord">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/discord-logo.png" alt="Discord" class="social-icon">
+        </a>
+        <a href="https://soundcloud.com/youngdollazz1700" aria-label="SoundCloud">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/soundcloud.png" alt="SoundCloud" class="social-icon">
+        </a>
+      </div>
+    </div>
+  </footer>
 
-            <!-- Social Links (Images as requested) -->
-            <div class="flex space-x-6 items-center">
-                <a href="https://www.youtube.com/@TheRealMayo_" class="block">
-                    <!-- YouTube -->
-                    <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube" class="social-icon w-8 h-8">
-                </a>
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (!navbar) return;
+      if (window.scrollY > 50) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    });
 
-                <a href="https://discord.gg/invite/a7eNTUaYPh" class="block">
-                    <!-- Discord -->
-                    <img src="https://img.icons8.com/ios-filled/50/ffffff/discord-logo.png" alt="Discord" class="social-icon w-8 h-8">
-                </a>
+    // Mobile Menu logic
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-                <a href="https://soundcloud.com/youngdollazz1700" class="block">
-                    <!-- SoundCloud -->
-                    <img src="https://img.icons8.com/ios-filled/50/ffffff/soundcloud.png" alt="SoundCloud" class="social-icon w-8 h-8">
-                </a>
+    function setMenuOpen(open) {
+      if (!mobileMenu || !mobileBtn) return;
+      mobileMenu.classList.toggle('open', open);
+      mobileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      mobileBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
 
-                <a href="https://www.tiktok.com/@therealmayo_official" class="block">
-                    <!-- TikTok -->
-                    <img src="assets/icos/tiktok.png" alt="TikTok" class="social-icon w-8 h-8">
-                </a>
-            </div>
-        </div>
-    </footer>
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        setMenuOpen(!mobileMenu.classList.contains('open'));
+      });
 
-    <!-- JavaScript for Navbar Logic -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navbar = document.getElementById('navbar');
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
+      document.addEventListener('click', function (e) {
+        if (!mobileMenu.classList.contains('open')) return;
+        if (e.target === mobileBtn || mobileBtn.contains(e.target)) return;
+        if (mobileMenu.contains(e.target)) return;
+        setMenuOpen(false);
+      });
 
-            // Scroll Effect
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.remove('nav-transparent');
-                    navbar.classList.add('nav-scrolled');
-                } else {
-                    navbar.classList.add('nav-transparent');
-                    navbar.classList.remove('nav-scrolled');
-                }
-            });
+      window.addEventListener('resize', function () {
+        if (window.innerWidth >= 901) setMenuOpen(false);
+      });
 
-            // Mobile Menu Toggle
-            mobileBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                
-                // Optional: Change background of nav when menu is open so text is visible
-                if (!mobileMenu.classList.contains('hidden')) {
-                    navbar.classList.remove('nav-transparent');
-                    navbar.classList.add('bg-nexus-dark');
-                } else if (window.scrollY <= 50) {
-                    navbar.classList.add('nav-transparent');
-                    navbar.classList.remove('bg-nexus-dark');
-                }
-            });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('open')) setMenuOpen(false);
+      });
+    }
 
-            // Smooth Scroll for Anchor Links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    mobileMenu.classList.add('hidden'); // Close mobile menu on click
-                    
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-        });
-    </script>
+    // Hide mobile menu on link click
+    document.querySelectorAll('#mobile-menu a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        setMenuOpen(false);
+      });
+    });
+
+    // Smooth scroll to target (desktop & mobile)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e){
+        const targetId = this.getAttribute('href');
+          if(targetId.length > 1){
+          e.preventDefault();
+          var el = document.querySelector(targetId);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          if (window.innerWidth < 901 && typeof setMenuOpen === 'function') setMenuOpen(false);
+        }
+      });
+    });
+  </script>
 </body>
-
 </html>
